@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        
+        // Base Cases:
+
+        // Number is odd and does not equal 1 (weeds out a lot very early)
+        if (n % 2 == 1 && n != 1)
+        {
+            return false;
+        }
+
+        if (n == 1 || n == 2)
+        {
+            return true;
+        }
+
+        // General case: divide by 2
+        return isPowerOfTwo(n / 2);
+    }
+};
