@@ -37,12 +37,23 @@ public:
         }
 
 
+        // 2c. Base case: n = 1
+        if (n == 1 && k == 1)
+        {
+            vector<int> combo = vector<int>();
+            combo.push_back(1);
+            combinations.push_back(combo);
+            return combinations;
+        }
+
+
+
         // Otherwise, general case:
 
         for (int i = n; i > 0; i--)                                             // For every value i:  [1,n]
         {
             vector<vector<int>> subcombinations = combine(i - 1, k - 1);       
-            for(int j = 0; j < subcombinations.size(); i++)                     // For every other subcombination j: [1, n-1]
+            for(int j = 0; j < subcombinations.size(); j++)                     // For every other subcombination j: [1, n-1]
             {
                 vector<int> combo = vector<int>();
                 combo.push_back(i);                                             // Make a combination that starts with i
@@ -52,22 +63,7 @@ public:
                     combo.push_back( subcombinations[j][z] );
                 }
 
-                // search our combinations to see if this combination already exists
-                bool found = false;
-                for (vector<int> c: combinations)
-                {
-                    if (c == combo)
-                    {
-                        found == true;
-                    }
-                }
-
-                // If this combination we just built is not in our combo list, add it
-                if (!found)
-                {
-                    combinations.push_back(combo);
-                }
-
+                combinations.push_back(combo);                                  // Return this merged combination
             }
         }
 
