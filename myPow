@@ -1,0 +1,23 @@
+class Solution {
+public:
+    double myPow(double x, int n) {
+        
+        // Base Case: exponent = 0
+        if (n == 0)
+        {
+            return 1;
+        }
+
+        // Otherwise, 2 general case
+
+        if ( n > 0 )    // Exponent is positive
+        {
+            return x * myPow(x, n-1);
+        }
+        
+        else            // Exponent is negative
+        {
+            return myPow(x, n+1) / x;
+        }
+    }
+};
