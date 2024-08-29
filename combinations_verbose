@@ -1,0 +1,142 @@
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+
+
+
+void print_combo(vector<int> c)
+{
+    cout << "[ ";
+    for (int i: c)
+    {
+        cout << i << " "; 
+    }
+    cout << " ]";
+}
+
+
+
+void print_combos(vector<vector<int>> combos)
+{
+    for (vector<int> v: combos)
+    {
+        print_combo(v);
+        cout << " ";
+    }
+    cout << "\n";
+
+}
+
+
+
+    vector<vector<int>> combine(int n, int k) {
+
+        cout << "k = " << k << ", n = " << n << "\n";
+
+        // 1. Create a list to hold our sub/combinations
+        vector<vector<int>> combinations = vector<vector<int>>();
+
+        // 2a. Base case: choose 1 item from our set
+        if (k == 1)
+        {
+            
+            // just return each individual number as a combination
+            for (int i = n; i > 0; i--)
+            {
+                vector<int> combo = vector<int>();
+                combo.push_back(i);
+                combinations.push_back(combo);
+            }
+            //print_combos(combinations);
+            return combinations;
+        }
+    
+
+
+        // 2b. Base case: k = n
+        if (k == n)
+        {
+            // just return a single combination of all the numbers
+            vector<int> combo = vector<int>();
+
+            for (int i = n; i > 0; i--)
+            {              
+                combo.push_back(i);
+            }
+            combinations.push_back(combo);
+            //print_combos(combinations);
+            return combinations;
+        }
+
+
+
+        // 2c. Base case: n = 1
+        if (n == 1 && k == 1)
+        {
+            vector<int> combo = vector<int>();
+            combo.push_back(1);
+            combinations.push_back(combo);
+            return combinations;
+        }
+
+
+        // Otherwise, general case:
+
+        for (int i = n; i > 1; i--)                                             // For every value i:  [1,n]
+        {
+            vector<vector<int>> subcombinations = combine(i - 1, k - 1); 
+            print_combos(subcombinations);      
+            for(int j = 0; j < subcombinations.size(); j++)                     // For every other subcombination j: [1, n-1]
+            {
+
+                //cout << "subcominations: " << subcombinations.size() << "\n";
+                vector<int> combo = vector<int>();
+                combo.push_back(i);                                             // Make a combination that starts with i
+
+                for (int z = 0; z < subcombinations[j].size(); z++)                 // Add every other int in combination j to it
+                {
+                    //cout << "z = " << z << "\n";
+                    combo.push_back( subcombinations.at(j).at(z) );    
+                }
+
+                print_combo(combo);
+                cout << "\n"; 
+
+                // search our combinations to see if this combination already exists
+                bool found = false;
+                for (vector<int> c: combinations)
+                {
+                    if (c == combo)
+                    {
+                        found == true;
+                    }
+                }
+
+                // If this combination we just built is not in our combo list, add it
+                if (!found)
+                {
+                    combinations.push_back(combo);
+                }
+
+            }
+              
+        }
+
+        return combinations;  
+    }
+
+
+
+int main()
+{
+    vector<vector<int>> output;
+
+    output = combine(4,2);    
+    print_combos(output);
+
+
+
+    return 0;
+}
