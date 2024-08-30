@@ -1,0 +1,91 @@
+class Solution {
+public:
+    // Note that this should terminate before there is only one element in the list so no need to program for that case
+    //  Should be fine as long as we get sanitized input (list_size > 1)
+
+    int findGCD(vector<int>& nums) {
+
+        /*
+        for (int i: nums)
+        {
+            cout << i << " ";
+        }
+
+        cout << "\n";
+        */
+
+        // Base case: Only 2 elements left. By this point, we should only hold data we need. Find their GCD
+        if (nums.size() == 2)
+        {
+            int max = *max_element(nums.begin(), nums.begin() + 2);
+            int min = *min_element(nums.begin(), nums.begin() + 2);
+
+            for (int i = max; i > 0; i--)                                   // Count down from largest value to 1                       
+            {
+                if ( min % i == 0 && max % i == 0)                          // If value i goes evenly into both largest and smallest  
+                {
+                    return i;                                                   // Return it
+                }
+            }
+
+            return 1;                                                       // Otherwise return 1 (1 goes into everything)
+        }
+
+
+        
+
+
+
+
+        // General Case: Remove 1 useless element (neither greatest or smallest) from first 3 options of list
+
+        // Check for identical numbers
+        if ( nums[0] == nums[1] )
+        {
+            nums.erase(nums.begin() + 1);
+            return findGCD(nums);
+        }
+
+        else if (nums[1] == nums[2])
+        {
+            nums.erase(nums.begin() + 1);
+            return findGCD(nums); 
+        }
+
+        else if (nums[0] == nums[2])
+        {
+            nums.erase(nums.begin() + 2);
+            return findGCD(nums); 
+        }
+
+        // Otherwise
+
+        int max = *max_element(nums.begin(), nums.begin() + 3);
+        int min = *min_element(nums.begin(), nums.begin() + 3);
+
+
+        cout << "min: " << min << " max: " << max << "\n";
+
+                int initial_size = nums.size();
+        
+
+
+        for (int i = 0; i < initial_size; i++)                                      // Create a sublist in-place (at the back of this list)
+        {
+            if ( (nums[i] != min) && (nums[i] != max) && (i < 3) )          // If this data is useless
+            {
+                continue;                                                   // Ignore it                                          
+            }
+
+            nums.push_back(nums[i]);                                        // Otherwise, make a copy of it
+        }
+
+
+        // remove the old list at the front
+        nums.erase(nums.begin(), nums.begin() + initial_size);
+
+
+        return findGCD(nums);                                      // Find GCD of sub-problem ( list[n-1] )
+    }
+
+};
